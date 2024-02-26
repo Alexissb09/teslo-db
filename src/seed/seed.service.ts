@@ -6,12 +6,12 @@ import { initialData } from './data/seed-data';
 export class SeedService {
   constructor(private readonly productService: ProductsService) {}
 
-  async executeSeed() {
-    await this.insertNewProducts();
+  async executeSeed(user) {
+    await this.insertNewProducts(user);
     return 'Seed executed';
   }
 
-  private async insertNewProducts() {
+  private async insertNewProducts(user) {
     await this.productService.removeAllProducts();
 
     const products = initialData.products;
@@ -19,7 +19,7 @@ export class SeedService {
     const insertPromises = [];
 
     products.forEach((product) => {
-      insertPromises.push(this.productService.create(product));
+      insertPromises.push(this.productService.create(product, user));
     });
 
     await Promise.all(insertPromises);
